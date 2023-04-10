@@ -34,18 +34,6 @@ const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
       });
   }, []);
 
-  React.useEffect(() => {
-    const id = url.split("/").reverse()[0];
-    fetch(`/api/pokemon/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(`data fetched for ${id}`, data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
   return (
     <div style={{ padding: "8px", border: "1px solid white" }}>
       <div>{name}</div>
