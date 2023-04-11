@@ -10,6 +10,7 @@ export default function handler(
   stubReq: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  console.log("received mock request");
   if (stubReq.body != null) {
     console.log(`mocking ${stubReq.body.url}`);
     server.use(

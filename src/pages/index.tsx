@@ -8,6 +8,13 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export async function getServerSideProps() {
+  console.log("calling server side props");
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 4000);
+  });
+  console.log("fetching pokemon data");
   const data = await fetch("https://pokeapi.co/api/v2/pokemon").then((res) =>
     res.json()
   );

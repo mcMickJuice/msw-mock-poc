@@ -1,11 +1,11 @@
 describe("template spec", () => {
   it("passes", () => {
     // stub server side request. call this before the app loads to capture server side calls
+    cy.visit("http://localhost:3000");
     cy.request("http://localhost:3000/api/mock", {
       url: "https://pokeapi.co/api/v2/pokemon",
       data: [],
     });
-    cy.visit("http://localhost:3000");
 
     // call this for client calls as mws is not on window yet
     cy.window().then((window: any) => {
