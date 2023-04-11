@@ -1,3 +1,4 @@
+import { mockMap } from "../../src/mocks/handlers";
 // / <reference types="cypress" />
 // ***********************************************
 // This example commands.ts shows you how to
@@ -31,9 +32,17 @@
 Cypress.Commands.add("mock", () => {
   // TODO: currently intercepting all routes. Should be more specific?
   cy.intercept({ method: "GET", url: "*" }, (req) => {
-    console.log("cypress intercepted", req.url);
     req.headers["x-mock"] = "true";
     req.continue();
+  });
+
+  Object.entries(mockMap).forEach(([key, value]) => {
+    // TODO add method?
+    cy.intercept({ method: "GET", url: value.urlPattern }, (req) => {
+      console.log(`intercepted ${key}, returning mocked response`);
+
+      req.reply(value.payload);
+    });
   });
 });
 

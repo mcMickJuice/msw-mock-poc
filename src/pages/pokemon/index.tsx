@@ -51,7 +51,10 @@ const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
   }, []);
 
   return (
-    <div style={{ padding: "8px", border: "1px solid white" }}>
+    <div
+      data-test-id="pokemon-display"
+      style={{ padding: "8px", border: "1px solid white" }}
+    >
       <div>{name}</div>
       {fetchState.type === "fetched" && (
         <img src={fetchState.data.sprites.front_default} />
@@ -71,7 +74,7 @@ export default function Home({ pokemon }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {pokemon.results.slice(0, 4).map((r: { name: string; url: string }) => (
+        {pokemon.results.map((r: { name: string; url: string }) => (
           <PokemonDisplay key={r.url} name={r.name} url={r.url} />
         ))}
       </main>
