@@ -3,6 +3,7 @@ describe("template spec", () => {
     // intercept is only caught if service worker doesn't get the request
     // first, i.e. service-worker -> intercept -> server
     // currently intercepting all routes. Should be more specific?
+    // TODO: turn this into a cypress command for better ergonomics
     cy.intercept({ method: "GET", url: "*" }, (req) => {
       console.log("cypress intercepted", req.url);
       req.headers["x-mock"] = "true";
