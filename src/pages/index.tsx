@@ -24,14 +24,17 @@ const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
   >({ type: "loading" });
 
   React.useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setFetchState({ type: "fetched", data });
-      })
-      .catch((err) => {
-        setFetchState({ type: "error" });
-      });
+    // had to add delay to prove mock from cypress test was actually working
+    setTimeout(() => {
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          setFetchState({ type: "fetched", data });
+        })
+        .catch((err) => {
+          setFetchState({ type: "error" });
+        });
+    }, 4000);
   }, []);
 
   return (
@@ -55,8 +58,7 @@ export default function Home({ pokemon }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {/* <pre>{JSON.stringify(props, null, 2)}</pre> */}
-        {pokemon.results.map((r: { name: string; url: string }) => (
+        {pokemon.results.slice(0, 4).map((r: { name: string; url: string }) => (
           <PokemonDisplay key={r.url} name={r.name} url={r.url} />
         ))}
       </main>
