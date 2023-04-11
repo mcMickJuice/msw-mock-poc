@@ -18,7 +18,7 @@ const inter = Inter({ subsets: ["latin"] });
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   // FIXME Was getting "unable to verify the first certificate" when passing these headers through and
   // the actual request was being made.
-  const customHeaders = context.req.headers["x-mock-header"]
+  const customHeaders = context.req.headers["x-mock"]
     ? { headers: context.req.headers as any }
     : {};
   const data = await fetch(

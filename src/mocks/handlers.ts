@@ -5,7 +5,7 @@ export const handlers = [
   rest.get("https://pokeapi.co/api/v2/pokemon", async (req, res, ctx) => {
     // console.log("get all pokemon", req.url);
 
-    const mockHeader = req.headers.get("x-mock-header");
+    const mockHeader = req.headers.get("x-mock");
 
     if (mockHeader) {
       console.log("mocking https://pokeapi.co/api/v2/pokemon");
@@ -31,8 +31,8 @@ export const handlers = [
   }),
   rest.get("https://pokeapi.co/api/v2/pokemon/:id/", (req, res, ctx) => {
     // console.log("get specific pokemon");
-    // console.log("header", req.headers.get("X-mock-header"));
-    const mockHeader = req.headers.get("x-mock-header");
+    // console.log("header", req.headers.get("x-mock"));
+    const mockHeader = req.headers.get("x-mock");
 
     if (mockHeader) {
       console.log(

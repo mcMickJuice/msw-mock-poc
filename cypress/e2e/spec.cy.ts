@@ -4,8 +4,8 @@ describe("template spec", () => {
     // first, i.e. service-worker -> intercept -> server
     // currently intercepting all routes. Should be more specific?
     cy.intercept({ method: "GET", url: "*" }, (req) => {
-      console.log("intercepted", req.url);
-      req.headers["x-mock-header"] = "true";
+      console.log("cypress intercepted", req.url);
+      req.headers["x-mock"] = "true";
       req.continue();
     });
     cy.visit("http://localhost:3000");
@@ -29,7 +29,10 @@ describe("template spec", () => {
       });
 
     // how does client side routing affect this?
-    cy.get("a").click();
+    // uncomment this to navigate via client side routing
+    // TODO - our sw handler is catching the id requests but `x-mock` is not set
+    // as the sw is getting the request before cy.intercept
+    // cy.get("a").click();
   });
 
   it("loads homepage with actual response", () => {

@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ["latin"] });
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   // FIXME Was getting "unable to verify the first certificate" when passing these headers through and
   // the actual request was being made.
-  const customHeaders = context.req.headers["x-mock-header"]
+  const customHeaders = context.req.headers["x-mock"]
     ? { headers: context.req.headers as any }
     : {};
   const data = await fetch(
@@ -38,7 +38,7 @@ const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
       // setting this proves that, in the client, service worker gets a request before cypress.intercept
       // uncommenting this will result in id handler ins handlers returns mock
       // headers: {
-      //   "x-mock-header": "true",
+      //   "x-mock": "true",
       // },
     })
       .then((res) => res.json())
