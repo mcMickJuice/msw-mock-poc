@@ -10,13 +10,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 // this is called before our mock endpoint accepts the mock
 export async function getServerSideProps() {
-  console.log("calling server side props");
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 4000);
-  });
-  console.log("fetching pokemon data");
   const data = await fetch("https://pokeapi.co/api/v2/pokemon", {
     next: {},
   }).then((res) => res.json());
@@ -34,16 +27,15 @@ const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
 
   React.useEffect(() => {
     // had to add delay to prove mock from cypress test was actually working
-    setTimeout(() => {
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          setFetchState({ type: "fetched", data });
-        })
-        .catch((err) => {
-          setFetchState({ type: "error" });
-        });
-    }, 4000);
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setFetchState({ type: "fetched", data });
+      })
+      .catch((err) => {
+        setFetchState({ type: "error" });
+      });
   }, []);
 
   return (
@@ -68,9 +60,9 @@ export default function Home({ pokemon }: any) {
       </Head>
       <main>
         <Link href={"/pokemon"}>Go to Pokemon</Link>
-        {/* {pokemon.results.slice(0, 4).map((r: { name: string; url: string }) => (
+        {pokemon.results.slice(0, 4).map((r: { name: string; url: string }) => (
           <PokemonDisplay key={r.url} name={r.name} url={r.url} />
-        ))} */}
+        ))}
       </main>
     </>
   );

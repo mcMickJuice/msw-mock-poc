@@ -29,16 +29,15 @@ const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
 
   React.useEffect(() => {
     // had to add delay to prove mock from cypress test was actually working
-    setTimeout(() => {
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          setFetchState({ type: "fetched", data });
-        })
-        .catch((err) => {
-          setFetchState({ type: "error" });
-        });
-    }, 4000);
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setFetchState({ type: "fetched", data });
+      })
+      .catch((err) => {
+        setFetchState({ type: "error" });
+      });
   }, []);
 
   return (
