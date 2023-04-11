@@ -4,22 +4,17 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
-import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// this is called before our mock endpoint accepts the mock
+// if we navigate to this page from another page, this should be mocked
 export async function getServerSideProps() {
   console.log("calling server side props");
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 4000);
-  });
+
   console.log("fetching pokemon data");
-  const data = await fetch("https://pokeapi.co/api/v2/pokemon", {
-    next: {},
-  }).then((res) => res.json());
+  const data = await fetch("https://pokeapi.co/api/v2/pokemon").then((res) =>
+    res.json()
+  );
   return {
     props: {
       pokemon: data,
@@ -67,10 +62,9 @@ export default function Home({ pokemon }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Link href={"/pokemon"}>Go to Pokemon</Link>
-        {/* {pokemon.results.slice(0, 4).map((r: { name: string; url: string }) => (
+        {pokemon.results.slice(0, 4).map((r: { name: string; url: string }) => (
           <PokemonDisplay key={r.url} name={r.name} url={r.url} />
-        ))} */}
+        ))}
       </main>
     </>
   );

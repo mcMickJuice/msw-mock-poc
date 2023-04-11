@@ -27,5 +27,7 @@ describe("template spec", () => {
         )
       );
     });
+
+    cy.get("a").contains("Go to Pokemon").click();
   });
 });
