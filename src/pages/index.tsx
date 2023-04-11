@@ -7,6 +7,7 @@ import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
+// this is called before our mock endpoint accepts the mock
 export async function getServerSideProps() {
   console.log("calling server side props");
   await new Promise((resolve) => {
