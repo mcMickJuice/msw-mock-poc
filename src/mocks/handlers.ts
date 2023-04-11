@@ -25,6 +25,7 @@ export const handlers = [
       );
     }
 
+    console.log("passthrough on list call");
     return req.passthrough();
   }),
   rest.get("https://pokeapi.co/api/v2/pokemon/:id/", (req, res, ctx) => {
@@ -48,6 +49,7 @@ export const handlers = [
       );
     }
 
+    console.log("passthrough on id call");
     return req.passthrough();
   }),
 ];

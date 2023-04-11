@@ -4,17 +4,21 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
+import { GetServerSidePropsContext } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
 // if we navigate to this page from another page, this should be mocked
-export async function getServerSideProps() {
-  console.log("calling server side props");
-
-  console.log("fetching pokemon data");
-  const data = await fetch("https://pokeapi.co/api/v2/pokemon").then((res) =>
-    res.json()
-  );
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  // FIXME Was getting "unable to verify the first certificate" when passing these headers through and
+  // the actual request was being made.
+  const customHeaders = context.req.headers["x-mock-header"]
+    ? { headers: context.req.headers as any }
+    : {};
+  const data = await fetch(
+    "https://pokeapi.co/api/v2/pokemon",
+    customHeaders
+  ).then((res) => res.json());
   return {
     props: {
       pokemon: data,

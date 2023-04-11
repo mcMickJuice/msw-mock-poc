@@ -1,5 +1,5 @@
 describe("template spec", () => {
-  it("loads homepage with mock response", () => {
+  it.only("loads homepage with mock response", () => {
     cy.intercept({ method: "GET", url: "*" }, (req) => {
       console.log("intercepted", req.url);
       req.headers["x-mock-header"] = "true";
@@ -24,6 +24,9 @@ describe("template spec", () => {
           cy.contains("larry");
         });
       });
+
+    // how does client side routing affect this?
+    cy.get("a").click();
   });
 
   it("loads homepage with actual response", () => {

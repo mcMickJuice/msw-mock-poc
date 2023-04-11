@@ -10,14 +10,12 @@ import { GetServerSidePropsContext } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// this is called before our mock endpoint accepts the mock
+/**
+ * 
+ I want to test client side routing with this component. It's an exact copy of pages/index.ts
+ */
+
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  console.log(
-    "index get server side props",
-
-    context.req.headers["x-mock-header"]
-  );
-
   // FIXME Was getting "unable to verify the first certificate" when passing these headers through and
   // the actual request was being made.
   const customHeaders = context.req.headers["x-mock-header"]
