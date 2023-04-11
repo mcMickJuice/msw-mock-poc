@@ -1,5 +1,8 @@
 describe("template spec", () => {
   it.only("loads homepage with mock response", () => {
+    // intercept is only caught if service worker doesn't get the request
+    // first, i.e. service-worker -> intercept -> server
+    // currently intercepting all routes. Should be more specific?
     cy.intercept({ method: "GET", url: "*" }, (req) => {
       console.log("intercepted", req.url);
       req.headers["x-mock-header"] = "true";

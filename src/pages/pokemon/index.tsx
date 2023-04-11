@@ -34,7 +34,13 @@ const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
   React.useEffect(() => {
     // had to add delay to prove mock from cypress test was actually working
 
-    fetch(url)
+    fetch(url, {
+      // setting this proves that, in the client, service worker gets a request before cypress.intercept
+      // uncommenting this will result in id handler ins handlers returns mock
+      // headers: {
+      //   "x-mock-header": "true",
+      // },
+    })
       .then((res) => res.json())
       .then((data) => {
         setFetchState({ type: "fetched", data });

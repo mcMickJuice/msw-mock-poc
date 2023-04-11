@@ -26,7 +26,8 @@ export const handlers = [
     }
 
     console.log("passthrough on list call");
-    return req.passthrough();
+    //mswjs.io/docs/api/request/passthrough
+    https: return req.passthrough();
   }),
   rest.get("https://pokeapi.co/api/v2/pokemon/:id/", (req, res, ctx) => {
     // console.log("get specific pokemon");
