@@ -1,5 +1,5 @@
 describe("template spec", () => {
-  it("loads homepage with mock response", () => {
+  it("loads homepage, client navigates to other page with mock response", () => {
     cy.mock();
     cy.visit("http://localhost:3000");
 
@@ -52,7 +52,7 @@ describe("template spec", () => {
     verifyStubbedData();
   });
 
-  it("loads homepage with actual response", () => {
+  it("loads homepage, client navigates to other page with actual response", () => {
     cy.visit("http://localhost:3000");
 
     // verify pokemon are from actual request
