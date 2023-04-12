@@ -1,12 +1,11 @@
 import React from "react";
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
 import { GetServerSidePropsContext } from "next";
 
-const inter = Inter({ subsets: ["latin"] });
+/**
+ * 
+ I want to test client side routing with this component. It's an exact copy of pages/index.ts
+ */
 
 // if we navigate to this page from another page, this should be mocked
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -32,8 +31,6 @@ const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
   >({ type: "loading" });
 
   React.useEffect(() => {
-    // had to add delay to prove mock from cypress test was actually working
-
     fetch(url, {
       // setting this proves that, in the client, service worker gets a request before cypress.intercept
       // uncommenting this will result in id handler ins handlers returns mock

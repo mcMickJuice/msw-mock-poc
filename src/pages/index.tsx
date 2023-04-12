@@ -1,19 +1,7 @@
 import React from "react";
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
 import Link from "next/link";
-import { AppContext } from "next/app";
 import { GetServerSidePropsContext } from "next";
-
-const inter = Inter({ subsets: ["latin"] });
-
-/**
- * 
- I want to test client side routing with this component. It's an exact copy of pages/index.ts
- */
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   // FIXME Was getting "unable to verify the first certificate" when passing these headers through and
@@ -38,8 +26,6 @@ const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
   >({ type: "loading" });
 
   React.useEffect(() => {
-    // had to add delay to prove mock from cypress test was actually working
-
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
