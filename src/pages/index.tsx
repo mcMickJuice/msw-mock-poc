@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { GetServerSidePropsContext } from "next";
+import { PokemonDisplay } from "@/components/PokemonDisplay";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   // FIXME Was getting "unable to verify the first certificate" when passing these headers through and
@@ -19,36 +20,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     },
   };
 }
-
-const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
-  const [fetchState, setFetchState] = React.useState<
-    { type: "loading" } | { type: "fetched"; data: any } | { type: "error" }
-  >({ type: "loading" });
-
-  React.useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setFetchState({ type: "fetched", data });
-      })
-      .catch((err) => {
-        setFetchState({ type: "error" });
-      });
-  }, []);
-
-  return (
-    <div
-      data-test-id="pokemon-display"
-      style={{ padding: "8px", border: "1px solid white" }}
-    >
-      <div>{name}</div>
-      {fetchState.type === "fetched" && (
-        <img src={fetchState.data.sprites.front_default} />
-      )}
-      {fetchState.type === "error" && <div>An Error Occurred</div>}
-    </div>
-  );
-};
 
 export default function Home({ pokemon }: any) {
   return (
