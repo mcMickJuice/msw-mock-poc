@@ -1,8 +1,8 @@
 import { rest } from "msw";
 
-// TODO NAME???!?!?
-export const mockMap = {
+export const resourceToMockMap = {
   POKE_LIST: {
+    // msw specific pattern
     url: "https://pokeapi.co/api/v2/pokemon",
     // cypress url pattern
     urlPattern: "https://pokeapi.co/api/v2/pokemon",
@@ -19,7 +19,6 @@ export const mockMap = {
     },
   },
   POKE_BY_ID: {
-    // prob won't work with cypress intercept
     url: "https://pokeapi.co/api/v2/pokemon/:id/",
     urlPattern: "https://pokeapi.co/api/v2/pokemon/*",
     payload: {
@@ -32,32 +31,33 @@ export const mockMap = {
 } as const;
 
 export const handlers = [
-  // // Uncomment to see requests mock at a global level
-  rest.get(mockMap["POKE_LIST"].url, async (req, res, ctx) => {
-    // console.log("get all pokemon", req.url);
-
+  rest.get(resourceToMockMap["POKE_LIST"].url, async (req, res, ctx) => {
     const mockHeader = req.headers.get("x-mock");
 
     if (mockHeader) {
-      console.log("mocking https://pokeapi.co/api/v2/pokemon");
-      return res(ctx.status(200), ctx.json(mockMap["POKE_LIST"].payload));
+      console.log(`mocking ${resourceToMockMap["POKE_LIST"].url}`);
+      return res(
+        ctx.status(200),
+        ctx.json(resourceToMockMap["POKE_LIST"].payload)
+      );
     }
 
     console.log("passthrough on list call");
     //mswjs.io/docs/api/request/passthrough
     https: return req.passthrough();
   }),
-  rest.get(mockMap["POKE_BY_ID"].url, (req, res, ctx) => {
-    // console.log("get specific pokemon");
-    // console.log("header", req.headers.get("x-mock"));
+  rest.get(resourceToMockMap["POKE_BY_ID"].url, (req, res, ctx) => {
     const mockHeader = req.headers.get("x-mock");
 
     if (mockHeader) {
       console.log(
-        "mocking https://pokeapi.co/api/v2/pokemon/:id/",
+        `mocking ${resourceToMockMap["POKE_BY_ID"].url}`,
         req.params.id
       );
-      return res(ctx.status(200), ctx.json(mockMap["POKE_BY_ID"].payload));
+      return res(
+        ctx.status(200),
+        ctx.json(resourceToMockMap["POKE_BY_ID"].payload)
+      );
     }
 
     console.log("passthrough on id call");

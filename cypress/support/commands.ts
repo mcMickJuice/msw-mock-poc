@@ -1,4 +1,4 @@
-import { mockMap } from "../../src/mocks/handlers";
+import { resourceToMockMap } from "../../src/mocks/handlers";
 // / <reference types="cypress" />
 // ***********************************************
 // This example commands.ts shows you how to
@@ -30,14 +30,16 @@ import { mockMap } from "../../src/mocks/handlers";
 // intercept is only caught if service worker doesn't get the request
 // first, i.e. service-worker -> intercept -> server
 Cypress.Commands.add("mock", () => {
-  // TODO: currently intercepting all routes. Should be more specific?
+  // TODO: currently intercepting all routes. Should be more specific? Maybe just to localhost/app domain?
+  // add header to requests to server for server side api mocking
   cy.intercept({ method: "GET", url: "*" }, (req) => {
     req.headers["x-mock"] = "true";
     req.continue();
   });
 
-  Object.entries(mockMap).forEach(([key, value]) => {
-    // TODO add method?
+  // used for mocking client side api calls
+  Object.entries(resourceToMockMap).forEach(([key, value]) => {
+    // TODO add http method?
     cy.intercept({ method: "GET", url: value.urlPattern }, (req) => {
       console.log(`intercepted ${key}, returning mocked response`);
 
@@ -49,10 +51,10 @@ Cypress.Commands.add("mock", () => {
 declare global {
   namespace Cypress {
     interface Chainable {
-      // login(email: string, password: string): Chainable<void>
+      /**
+       * mock but client and server calls for these tests
+       */
       mock(): Chainable;
-      // dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-      // visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
     }
   }
 }
