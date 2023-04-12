@@ -44,7 +44,7 @@ export const handlers = [
 
     console.log("passthrough on list call");
     //mswjs.io/docs/api/request/passthrough
-    https: return req.passthrough();
+    return req.passthrough();
   }),
   rest.get(resourceToMockMap["POKE_BY_ID"].url, (req, res, ctx) => {
     const mockHeader = req.headers.get("x-mock");
