@@ -43,4 +43,4 @@ I admittedly only spent an hour or so troubleshooting the above issues before lo
 
 ## Alternatives to current approach
 
-- [`nock`](https://github.com/nock/nock) - if we only use `msw` for server side mocking, this might lead to confusion giving that service workers are a web thing. We could instead just use nock which is a server side mocking tool that offers a ton of features (asserting mocks were hit, assert no pending mocks, etc)
+- [`nock`](https://github.com/nock/nock) - if we only use `msw` for server side mocking, this might lead to confusion giving that service workers are a web thing. We could instead just use nock which is a server side mocking tool that offers a ton of features (asserting mocks were hit, assert no pending mocks, etc). Here's `msw` [take on nock](https://mswjs.io/docs/comparison#nock)
