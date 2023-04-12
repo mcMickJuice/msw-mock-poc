@@ -1,5 +1,3 @@
-// import { rest } from "msw";
-
 async function initMocks() {
   if (typeof window === "undefined") {
     console.log("init mock server");
