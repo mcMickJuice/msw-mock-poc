@@ -1,10 +1,12 @@
-var mocha = require("mocha");
+const mocha = require("mocha");
+const fs = require("fs");
+const path = require("path");
 module.exports = MyReporter;
 
 function MyReporter(runner) {
   mocha.reporters.Base.call(this, runner);
-  var fileName;
-  var tests = [];
+  let fileName;
+  let tests = [];
 
   runner.on("suite", function (test) {
     // suite gets overwritten in subsequent events??
@@ -25,6 +27,19 @@ function MyReporter(runner) {
     const result = tests
       .map((test) => `${fileName},${cleanseTestName(test)}`)
       .join("\n");
-    console.log(result);
+
+    // split by path, reverse to get filename, split by '.' to remove extensions
+    const outputFileName = `${
+      fileName.split("/").reverse()[0].split(".")[0]
+    }.csv`;
+
+    console.log(`Writing out file ${outputFileName}`);
+    fs.writeFileSync(
+      path.resolve(path.join("reporter/output", outputFileName)),
+      `${result}\n`, //trailing newline for concat purposes
+      {
+        encoding: "utf-8",
+      }
+    );
   });
 }
