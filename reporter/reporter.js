@@ -21,8 +21,8 @@ function MyReporter(runner) {
 
   runner.on("end", function () {
     function cleanseTestName(test) {
-      const pattern = /[^A-Za-z0-9\s]/;
-      return test.replace(pattern, "");
+      const pattern = /[^A-Za-z0-9\s]/g;
+      return test.replaceAll(pattern, "");
     }
     const result = tests
       .map((test) => `${fileName},${cleanseTestName(test)}`)
@@ -33,6 +33,7 @@ function MyReporter(runner) {
       fileName.split("/").reverse()[0].split(".")[0]
     }.csv`;
 
+    // eslint-disable-next-line no-console -- test purposes
     console.log(`Writing out file ${outputFileName}`);
     fs.writeFileSync(
       path.resolve(path.join("reporter/output", outputFileName)),
