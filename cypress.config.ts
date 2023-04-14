@@ -8,4 +8,5 @@ export default defineConfig({
   },
   reporter: "reporter/reporter.js",
   video: false,
+  screenshotOnRunFailure: false,
 });
