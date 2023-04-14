@@ -34,6 +34,8 @@ Cypress.Commands.add("mock", () => {
   // add header to requests to server for server side api mocking
   cy.intercept({ method: "GET", url: "*" }, (req) => {
     req.headers["x-mock"] = "true";
+    req.headers["x-cypress-file"] = Cypress.spec.relative; //'file'
+    req.headers["x-cypress-test"] = Cypress.currentTest.titlePath.join(" ");
     req.continue();
   });
 
@@ -42,6 +44,22 @@ Cypress.Commands.add("mock", () => {
     // TODO add http method?
     cy.intercept({ method: "GET", url: value.urlPattern }, (req) => {
       console.log(`intercepted ${key}, returning mocked response`);
+
+      // dont call cy.request cuz you get the promise within a promise thing
+      // trace intercept call
+      fetch("http://localhost:4000/trace", {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          source: "client",
+          testFile: Cypress.spec.relative,
+          testTitle: Cypress.currentTest.titlePath.join(" "),
+          url: req.url,
+        }),
+      });
 
       req.reply(value.payload);
     });
