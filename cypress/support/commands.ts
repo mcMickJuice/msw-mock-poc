@@ -56,6 +56,7 @@ Cypress.Commands.add("mock", () => {
         body: JSON.stringify({
           source: "client",
           testFile: Cypress.spec.relative,
+          // TODO: clean test title string
           testTitle: Cypress.currentTest.titlePath.join(" "),
           url: req.url,
         }),

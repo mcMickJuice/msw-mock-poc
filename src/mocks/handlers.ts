@@ -1,4 +1,5 @@
 import { rest } from "msw";
+import axios from "axios";
 
 export const resourceToMockMap = {
   POKE_LIST: {
@@ -30,12 +31,28 @@ export const resourceToMockMap = {
   },
 } as const;
 
+const MOCK_HEADER = "x-mock";
+const CYPRESS_FILE_HEADER = "x-cypress-file";
+const CYPRESS_TEST_HEADER = "x-cypress-test";
+
 export const handlers = [
   rest.get(resourceToMockMap["POKE_LIST"].url, async (req, res, ctx) => {
-    const mockHeader = req.headers.get("x-mock");
+    console.log(Object.keys(req.headers));
+    const mockHeader = req.headers.get(MOCK_HEADER);
 
     if (mockHeader) {
       console.log(`mocking ${resourceToMockMap["POKE_LIST"].url}`);
+
+      const fileHeader = req.headers.get(CYPRESS_FILE_HEADER);
+      const titleHeader = req.headers.get(CYPRESS_TEST_HEADER);
+      await axios.put("http://localhost:4000/trace", {
+        source: "server",
+        testFile: fileHeader,
+        // TODO: clean test title string
+        testTitle: titleHeader,
+        url: req.url,
+      });
+
       return res(
         ctx.status(200),
         ctx.json(resourceToMockMap["POKE_LIST"].payload)
@@ -46,14 +63,25 @@ export const handlers = [
     //mswjs.io/docs/api/request/passthrough
     return req.passthrough();
   }),
-  rest.get(resourceToMockMap["POKE_BY_ID"].url, (req, res, ctx) => {
-    const mockHeader = req.headers.get("x-mock");
+  rest.get(resourceToMockMap["POKE_BY_ID"].url, async (req, res, ctx) => {
+    const mockHeader = req.headers.get(MOCK_HEADER);
 
     if (mockHeader) {
       console.log(
         `mocking ${resourceToMockMap["POKE_BY_ID"].url}`,
         req.params.id
       );
+
+      const fileHeader = req.headers.get(CYPRESS_FILE_HEADER);
+      const titleHeader = req.headers.get(CYPRESS_TEST_HEADER);
+      await axios.put("http://localhost:4000/trace", {
+        source: "server",
+        testFile: fileHeader,
+        // TODO: clean test title string
+        testTitle: titleHeader,
+        url: req.url,
+      });
+
       return res(
         ctx.status(200),
         ctx.json(resourceToMockMap["POKE_BY_ID"].payload)
