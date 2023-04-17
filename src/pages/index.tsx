@@ -1,61 +1,25 @@
 import React from "react";
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
 import Link from "next/link";
+import { GetServerSidePropsContext } from "next";
+import { PokemonDisplay } from "@/components/PokemonDisplay";
 
-const inter = Inter({ subsets: ["latin"] });
-
-// this is called before our mock endpoint accepts the mock
-export async function getServerSideProps() {
-  console.log("calling server side props");
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 4000);
-  });
-  console.log("fetching pokemon data");
-  const data = await fetch("https://pokeapi.co/api/v2/pokemon", {
-    next: {},
-  }).then((res) => res.json());
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  // FIXME Was getting "unable to verify the first certificate" when passing these headers through and
+  // the actual request was being made.
+  const customHeaders = context.req.headers["x-mock"]
+    ? { headers: context.req.headers as any }
+    : {};
+  const data = await fetch(
+    "https://pokeapi.co/api/v2/pokemon",
+    customHeaders
+  ).then((res) => res.json());
   return {
     props: {
       pokemon: data,
     },
   };
 }
-
-const PokemonDisplay = ({ name, url }: { name: string; url: string }) => {
-  const [fetchState, setFetchState] = React.useState<
-    { type: "loading" } | { type: "fetched"; data: any } | { type: "error" }
-  >({ type: "loading" });
-
-  React.useEffect(() => {
-    // had to add delay to prove mock from cypress test was actually working
-    setTimeout(() => {
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          setFetchState({ type: "fetched", data });
-        })
-        .catch((err) => {
-          setFetchState({ type: "error" });
-        });
-    }, 4000);
-  }, []);
-
-  return (
-    <div style={{ padding: "8px", border: "1px solid white" }}>
-      <div>{name}</div>
-      {fetchState.type === "fetched" && (
-        <img src={fetchState.data.sprites.front_default} />
-      )}
-      {fetchState.type === "error" && <div>An Error Occurred</div>}
-    </div>
-  );
-};
 
 export default function Home({ pokemon }: any) {
   return (
@@ -68,9 +32,9 @@ export default function Home({ pokemon }: any) {
       </Head>
       <main>
         <Link href={"/pokemon"}>Go to Pokemon</Link>
-        {/* {pokemon.results.slice(0, 4).map((r: { name: string; url: string }) => (
+        {pokemon.results.map((r: { name: string; url: string }) => (
           <PokemonDisplay key={r.url} name={r.name} url={r.url} />
-        ))} */}
+        ))}
       </main>
     </>
   );

@@ -6,4 +6,7 @@ export default defineConfig({
       // implement node event listeners here
     },
   },
+  reporter: "reporter/reporter.js",
+  video: false,
+  screenshotOnRunFailure: false,
 });
